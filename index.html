@@ -25,15 +25,44 @@
 <body class="w-screen overflow-x-hidden bg-yellow-100">
     <div id="app">
         <div class="container mx-auto">
-            <div class="bg-yellow-900 w-5/12 mx-auto my-6 py-8 rounded-xl">
-                <h1 class="font-bold text-3xl text-center text-white">Menu Gallery ({{ photoAmount }})</h1>
+            <div class="grid grid-cols-3 gap-4">
+                <div class="col-start-2">
+                    <div class="bg-yellow-900 my-6 py-8 rounded-xl">
+                        <h1 class="font-bold text-3xl text-center text-white">Menu Gallery ({{ photoAmount }})</h1>
+                    </div>
+                    <div>
+                        <div v-if="searchClicked">
+                            <div class="flex">
+                                <input v-model="inputSearch" placeholder="What are you craving for?"
+                                    class="p-2 bg-white w-10/12 rounded border border-grey-300">
+                                <button class="p-2 bg-blue-300 rounded ml-2 text-white"
+                                    v-on:click="switchSearchClicked()">Cancel</button>
+                            </div>
+                        </div>
+                        <i class="fas fa-search text-2xl" v-on:click="switchSearchClicked()" v-else></i>
+                    </div>
+                    <div v-for="(photo,index) in searchMenu">
+                        <div class="flex bg-white rounded-xl my-8 mx-auto items-center">
+                            <i class="fas fa-heart text-red-500 text-xl ml-10" v-if="photo.click"
+                                v-on:click="favClicked(index)"></i>
+                            <i class="far fa-heart text-xl ml-10" v-else v-on:click="favClicked(index)"></i>
+                            <img :src="photo.img" class="w-4/12">
+                            <p class="text-xl font-medium"> {{ photo.menuTitle }}</p>
+                        </div>
+                    </div>
+                    <br>
+                    <p v-if="notFound">We can't find what you are looking for... :(</p>
+                </div>
+                <div>
+                    <div class="bg-black mt-6">
+                        <i class="fas fa-times text-white text-3xl p-2"></i>
+                        <img :src="gallery[0].img" v-if="showImg">
+                        <img :src="gallery[1].img" v-if="showImg">
+                        <img :src="gallery[2].img" v-if="showImg">
+                    </div>
+                </div>
             </div>
-            <div v-for="(photo,index) in gallery" class="flex bg-white rounded-xl my-8 w-5/12 mx-auto items-center">
-                <i class="fas fa-heart text-red-500 text-xl ml-10" v-if="photo.click"></i>
-                <i class="far fa-heart text-xl ml-10" v-else></i>
-                <img :src="photo.img" class="w-4/12" v-on:click="imgClicked(index)">
-                <p class="text-xl font-medium"> {{ photo.menuTitle }}</p>
-            </div>
+
         </div>
         <div class="text-2xl bg-red-400 text-center py-4 w-1/5 fixed bottom-0 font-medium">
             Liked: {{ likeAmount }}
