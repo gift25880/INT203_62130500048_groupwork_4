@@ -2,14 +2,14 @@ const app = {
     data() {
         return {
             gallery: [
-                { img: "./images/strawberry-sundae.png", menuTitle: "Strawberry Banana & Cream", click: false },
-                { img: "./images/coit-tower.png", menuTitle: "Coit Tower", click: false },
-                { img: "./images/banana-split.png", menuTitle: "Banana Split", click: false }
+                { img: "./images/strawberry-sundae.png", menuTitle: "Strawberry Banana & Cream", click: false, showImg: false },
+                { img: "./images/coit-tower.png", menuTitle: "Coit Tower", click: false, showImg: false },
+                { img: "./images/banana-split.png", menuTitle: "Banana Split", click: false, showImg: false }
             ],
             searchClicked: false,
             inputSearch: '',
             notFound: false,
-            showImg: false
+            showImages: false
         }
     },
     methods: {
@@ -22,7 +22,18 @@ const app = {
                 this.inputSearch = '';
             }
         },
-        
+        close() {
+            this.showImages = false;
+            for (let i = 0; i<this.gallery.length; i++) {
+                console.log(this.gallery[i].showImg);
+                this.gallery[i].showImg = false;
+            }
+        },
+        imgClicked(index) {
+            this.showImages = !this.showImages;
+            this.gallery[index].showImg = !this.gallery[index].showImg;
+        }
+
     },
     computed: {
         photoAmount() {
